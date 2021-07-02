@@ -1,48 +1,72 @@
 import React, { useEffect, useState } from 'react';
 import { Route, useHistory } from 'react-router-dom';
-import GetQuery from './GetQuery'
+// import GetQuery from './GetQuery'
+import classes from './AppMain.module.css';
 
 const AppMain = () => {
-    const [query, setQuery] = useState("")
+    const [userId, setUserId] = useState("")
     const [name, setName] = useState("")
+    const [time, setTime] = useState(new Date())
     const history = useHistory()
 
     function onChange() {
-        setQuery(Math.floor(Math.random()*100))
+      const queryUserId = new URLSearchParams(window.location.search).get('userId')
+      const queryName = new URLSearchParams(window.location.search).get('name')
+      const queryTime = (new URLSearchParams(window.location.search).get('time'))
 
-    }
-  
-    useEffect(() => {
-      const params = new URLSearchParams()
-      if (query) {
-        params.append("name", "Name from query")
-        params.append("userId", query)
-        params.append("time", new Date())
-      } else {
-        params.delete("name")
-        params.delete("userId")
-        params.delete("time")
+      if (queryName ==null && queryUserId ==null &&  !queryTime) {
+        const params = new URLSearchParams()
+        params.append("userId", null)
+        params.append("name", null)
+        params.append("time", new Date(0))
+        history.push({search: params.toString()})
       }
-      history.push({search: params.toString()})
-    }, [query, history])
-
-    const saveNameHandler = (saveName) => {
-      setName(saveName)
+      else {
+        setUserId(queryUserId)
+        setName(queryName)
+        setTime(new Date(queryTime))
+      }
     }
+
+    let monthNames =["Jan","Feb","Mar","Apr",
+                      "May","Jun","Jul","Aug",
+                      "Sep", "Oct","Nov","Dec"];
+    let day = time.getDate()
+    let month = monthNames[time.getMonth()]
+    let year = time.getFullYear()
+    let hour = time.getHours()
+    let minute = time.getMinutes()
+    let second = time.getSeconds()
+    let ampm = hour < 12 ? 'am': 'pm'
+      
+    // useEffect(() => {
+    //   const params = new URLSearchParams()
+    //   if (userId) {
+    //     params.append("name", "Name from query")
+    //     params.append("userId", userId)
+    //     params.append("time", new Date())
+    //   } else {
+    //     params.delete("name")
+    //     params.delete("userId")
+    //     params.delete("time")
+    //   }
+    //   history.push({search: params.toString()})
+    // }, [userId, history])
+
+    // const saveNameHandler = (saveName) => {
+    //   setName(saveName)
+    // }
 
     return (
-        <div style={{width: "800px"}}>
-            <div style={{display: "flex", justifyContent: "center"}}>
-                <h3 style={{display: "inline-block", margin: "0px 10px 0px 0px", fontSize: "22px"}}>Swap - {name}</h3>
+        <div className={classes.Container}>
+            <div className={classes.SwapBotton}>
+                <h3>Swap - {name}</h3>
                 <button onClick={onChange}>Amend Swap</button>
                 <button>Clone Swap</button>
                 <button>Generate Email</button>
-                <button style={{marginLeft: "auto", order: "2"}}>Delete Swap</button>
+                <button className={classes.DeleteBotton}>Delete Swap</button>
             </div>
-            <Route 
-              path={ '/' }
-              render={() => <GetQuery onSaveName={saveNameHandler} />}
-            ></Route>
+            <div className={classes.UpdatedInfo}>Last modified by User id: {userId} at {day} {month} {year}, {hour}:{minute}:{second} {ampm} </div>
         </div>
     )
 }

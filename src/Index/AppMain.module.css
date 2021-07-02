@@ -1,0 +1,44 @@
+.Container {
+    width: 800px;
+
+}
+    
+    .SwapBotton {
+        display: flex;
+        justify-content: center;
+    }
+
+        h3 {
+            display: inline-block;
+            margin: 0px 10px 0px 0px;
+            font-size: calc(10px + 2vmin);
+        }
+
+        .DeleteBotton {
+            margin-left: auto;
+            order: 2;
+        }
+    
+    .UpdatedInfo {
+        display: block;
+        float: left;
+    }
+
+@media (max-width: 900px) {
+    .Container{
+        width: 530px;
+    }
+
+    .DeleteBotton {
+        margin-left: auto;
+        order: 2;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .DeleteBotton {
+        margin-left: 0;
+        order: 2;
+    }
+}
