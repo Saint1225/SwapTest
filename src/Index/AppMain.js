@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, useHistory } from 'react-router-dom';
-// import GetQuery from './GetQuery'
+import { useHistory } from 'react-router-dom';
 import classes from './AppMain.module.css';
 
 const AppMain = () => {
@@ -9,12 +8,16 @@ const AppMain = () => {
     const [time, setTime] = useState(new Date())
     const history = useHistory()
 
-    function onChange() {
-      const queryUserId = new URLSearchParams(window.location.search).get('userId')
-      const queryName = new URLSearchParams(window.location.search).get('name')
-      const queryTime = (new URLSearchParams(window.location.search).get('time'))
+    const queryUserId = new URLSearchParams(window.location.search).get('userId')
+    const queryName = new URLSearchParams(window.location.search).get('name')
+    const queryTime = (new URLSearchParams(window.location.search).get('time'))
+    console.log(queryUserId)
+    console.log(queryName)
+    console.log(queryTime)
 
+    useEffect (() => {
       if (queryName ==null && queryUserId ==null &&  !queryTime) {
+        console.log("if")
         const params = new URLSearchParams()
         params.append("userId", null)
         params.append("name", null)
@@ -22,10 +25,14 @@ const AppMain = () => {
         history.push({search: params.toString()})
       }
       else {
+        console.log("else")
         setUserId(queryUserId)
         setName(queryName)
-        setTime(new Date(queryTime))
       }
+    },[])
+
+    function onChange() {
+        setTime(new Date(queryTime))
     }
 
     let monthNames =["Jan","Feb","Mar","Apr",
@@ -38,24 +45,6 @@ const AppMain = () => {
     let minute = time.getMinutes()
     let second = time.getSeconds()
     let ampm = hour < 12 ? 'am': 'pm'
-      
-    // useEffect(() => {
-    //   const params = new URLSearchParams()
-    //   if (userId) {
-    //     params.append("name", "Name from query")
-    //     params.append("userId", userId)
-    //     params.append("time", new Date())
-    //   } else {
-    //     params.delete("name")
-    //     params.delete("userId")
-    //     params.delete("time")
-    //   }
-    //   history.push({search: params.toString()})
-    // }, [userId, history])
-
-    // const saveNameHandler = (saveName) => {
-    //   setName(saveName)
-    // }
 
     return (
         <div className={classes.Container}>
