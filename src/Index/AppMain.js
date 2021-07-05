@@ -3,36 +3,32 @@ import { useHistory } from 'react-router-dom';
 import classes from './AppMain.module.css';
 
 const AppMain = () => {
-    const [userId, setUserId] = useState("")
-    const [name, setName] = useState("")
-    const [time, setTime] = useState(new Date())
+    const [userId, setUserId] = useState("defaultUserId")
+    const [name, setName] = useState("defaultName")
+    const [time, setTime] = useState(new Date(0))
     const history = useHistory()
 
     const queryUserId = new URLSearchParams(window.location.search).get('userId')
     const queryName = new URLSearchParams(window.location.search).get('name')
     const queryTime = (new URLSearchParams(window.location.search).get('time'))
-    console.log(queryUserId)
-    console.log(queryName)
-    console.log(queryTime)
 
     useEffect (() => {
       if (queryName ==null && queryUserId ==null &&  !queryTime) {
-        console.log("if")
         const params = new URLSearchParams()
-        params.append("userId", null)
-        params.append("name", null)
-        params.append("time", new Date(0))
+        params.append("userId", "defaultUserId")
+        params.append("name", "defaultName")
+        params.append("time", new Date())
         history.push({search: params.toString()})
       }
       else {
-        console.log("else")
         setUserId(queryUserId)
         setName(queryName)
+        setTime(new Date(queryTime))
       }
     },[])
 
     function onChange() {
-        setTime(new Date(queryTime))
+        setTime(new Date())
     }
 
     let monthNames =["Jan","Feb","Mar","Apr",
