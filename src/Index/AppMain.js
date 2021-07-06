@@ -3,9 +3,9 @@ import { useHistory } from 'react-router-dom';
 import classes from './AppMain.module.css';
 
 const AppMain = () => {
-    const [userId, setUserId] = useState("defaultUserId")
-    const [name, setName] = useState("defaultName")
-    const [time, setTime] = useState(new Date(0))
+    const [userId, setUserId] = useState("1")
+    const [name, setName] = useState("TestSwap")
+    const [time, setTime] = useState(new Date())
     const history = useHistory()
 
     const queryUserId = new URLSearchParams(window.location.search).get('userId')
@@ -15,8 +15,8 @@ const AppMain = () => {
     useEffect (() => {
       if (queryName ==null && queryUserId ==null &&  !queryTime) {
         const params = new URLSearchParams()
-        params.append("userId", "defaultUserId")
-        params.append("name", "defaultName")
+        params.append("userId", "1")
+        params.append("name", "TestSwap")
         params.append("time", new Date())
         history.push({search: params.toString()})
       }
